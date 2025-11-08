@@ -182,4 +182,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [SB Admin 2](https://startbootstrap.com/theme/sb-admin-2) - Admin dashboard theme
 - [Bootstrap](https://getbootstrap.com/) - Frontend framework
 - [Font Awesome](https://fontawesome.com/) - Icons
-- [jQuery](https://jquery.com/) - JavaScript library
+- [jQuery](https://jquery.com/) - JavaScript library# MyBlog

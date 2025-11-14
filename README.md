@@ -36,20 +36,19 @@ cd Myblog
 
 2. Create a MySQL database and import the schema:
 ```sql
-CREATE DATABASE blog_db;
-USE blog_db;
+CREATE TABLE `admin_requests` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `requested_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `status` enum('pending','approved','rejected') DEFAULT 'pending'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Users table
-CREATE TABLE users (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    age INT,
-    is_admin BOOLEAN DEFAULT 0
-);
+-- --------------------------------------------------------
 
--- Categories table
+--
+-- Table structure for table `categories`
+--
+
 CREATE TABLE `categories` (
   `id` int NOT NULL,
   `name` varchar(50) NOT NULL,
@@ -57,7 +56,27 @@ CREATE TABLE `categories` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Posts table
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `id` int NOT NULL,
+  `post_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `comment` text NOT NULL,
+  `status` enum('pending','approved','rejected') DEFAULT 'pending',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `posts`
+--
+
 CREATE TABLE `posts` (
   `id` int NOT NULL,
   `title` varchar(200) NOT NULL,
@@ -70,24 +89,99 @@ CREATE TABLE `posts` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- --------------------------------------------------------
 
--- Comments table
-CREATE TABLE `comments` (
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
   `id` int NOT NULL,
-  `post_id` int NOT NULL,
-  `user_id` int NOT NULL,
-  `comment` text NOT NULL,
-  `status` enum('pending','approved','rejected') DEFAULT 'pending',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `age` int DEFAULT NULL,
+  `is_admin` tinyint(1) DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Admin requests table
-CREATE TABLE `admin_requests` (
-  `id` int NOT NULL,
-  `user_id` int NOT NULL,
-  `requested_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  `status` enum('pending','approved','rejected') DEFAULT 'pending'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `age`, `is_admin`, `created_at`) VALUES
+(22, 'admin', 'admin@gmail.com', '$2y$12$ZAHX4gIGZXNSNt.RoYR9Nuxk59bRmXvUUWHbmf4pXD0d0DW3TbNAS', 0, 1, '2025-11-14 17:15:08');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `admin_requests`
+--
+ALTER TABLE `admin_requests`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `posts`
+--
+ALTER TABLE `posts`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `admin_requests`
+--
+ALTER TABLE `admin_requests`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `posts`
+--
+ALTER TABLE `posts`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+COMMIT;
+
 ```
 
 3. Configure the database connection in `includes/config.php`:
@@ -102,12 +196,6 @@ $password = "your_password";
 ```bash
 mkdir -p uploads
 chmod 755 uploads
-```
-
-5. Insert a Master admin account in database:
-```sql
-INSERT INTO `users` (`id`, `password`, `Name`, `Email`, `Age`, `is_admin`) VALUES
-(22, '$2y$12$ZAHX4gIGZXNSNt.RoYR9Nuxk59bRmXvUUWHbmf4pXD0d0DW3TbNAS', 'admin', 'admin@gmail.com', 0, 1);
 ```
 
 6. Configure your web server to point to the project directory.
@@ -155,6 +243,64 @@ onsite2/
    - Moderate comments
    - Manage categories
    - Handle admin requests
+
+## Screenshots
+
+Below are screenshots from the application (click to view full size).
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="screenshots/Dashboard.png" alt="Dashboard" width="400" />
+      <div>Dashboard</div>
+    </td>
+    <td align="center">
+      <img src="screenshots/Home%20Page.png" alt="Home Page" width="400" />
+      <div>Home Page</div>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="screenshots/Login%20Page.png" alt="Login Page" width="400" />
+      <div>Login Page</div>
+    </td>
+    <td align="center">
+      <img src="screenshots/Registering%20Page.png" alt="Registering Page" width="400" />
+      <div>Registering Page</div>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="screenshots/Posts%20Management.png" alt="Posts Management" width="400" />
+      <div>Posts Management</div>
+    </td>
+    <td align="center">
+      <img src="screenshots/Add%20Post.png" alt="Add Post" width="400" />
+      <div>Add Post</div>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="screenshots/Categories%20Management.png" alt="Categories Management" width="400" />
+      <div>Categories Management</div>
+    </td>
+    <td align="center">
+      <img src="screenshots/Comments%20Management.png" alt="Comments Management" width="400" />
+      <div>Comments Management</div>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="screenshots/Users%20Management.png" alt="Users Management" width="400" />
+      <div>Users Management</div>
+    </td>
+    <td align="center">
+      <img src="screenshots/Admin%20Requests%20Management.png" alt="Admin Requests Management" width="400" />
+      <div>Admin Requests Management</div>
+    </td>
+  </tr>
+</table>
+
 
 ## Security Features
 

@@ -11,12 +11,7 @@ $adminRequests = $adminRequestsStmt->fetchAll();
 $adminRequestsNum = count($adminRequests);
 
 // // Fetch all pending requests
-$stmt = $pdo_conn->query("
-    SELECT ar.id, ar.user_id, users.Name, users.Email, ar.requested_at 
-    FROM admin_requests ar
-    JOIN users ON users.id = ar.user_id
-    WHERE ar.status='pending'
-");
+$stmt = $pdo_conn->query("SELECT * from admin_requests");
 $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
@@ -149,12 +144,17 @@ $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <tbody>
                                         <?php foreach ($requests as $request): ?>
                                             <?php
-                                            $uid = $request['user_id'];
-                                            $rid = $request['id'];
+                                            $uid = (int)$request['user_id'];
+
+                                            $user = $pdo_conn
+                                                ->query("SELECT * FROM users WHERE id = $uid")
+                                                ->fetch(PDO::FETCH_ASSOC);
+
+                                            $rid = (int)$request['id'];
                                             ?>
                                             <tr>
-                                                <td><?= $request["Name"] ?></td>
-                                                <td><?= $request["Email"] ?></td>
+                                                <td><?= $user["name"] ?></td>
+                                                <td><?= $user["email"] ?></td>
                                                 <td><?= $request["requested_at"] ?></td>
                                                 <td>
                                                     <a href="request_response.php?uid=<?= $uid ?>&rid=<?= $rid ?>&response=true" class="btn btn-success">Accept</a>
@@ -162,6 +162,7 @@ $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 </td>
                                             </tr>
                                         <?php endforeach ?>
+
                                     </tbody>
                                 </table>
                             </div>

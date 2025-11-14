@@ -4,6 +4,10 @@
  * Expects POST with post_id and content. Requires the user to be logged in.
  */
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once __DIR__ . "/includes/config.php";
 
 // Only accept POST requests

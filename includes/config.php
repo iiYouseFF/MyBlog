@@ -16,8 +16,8 @@
 // Database configuration
 $hostname = "localhost";
 $dbname = "blog_db";
-$username = "admin";
-$password = "StrongPassword";
+$username = "phpmyadmin";
+$password = "SrN6.bEp3T[OThOk";
 
 // Establish database connection
 try {

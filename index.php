@@ -97,9 +97,6 @@ $posts = $stmt->fetchAll();
 
 
                     <!-- Content Row -->
-                    <div class="row">
-
-                    </div>
 
                     <div class="card shadow mb-4">
                         <div class="card-body">
@@ -111,7 +108,7 @@ $posts = $stmt->fetchAll();
                                         $category = $catSTMT->fetch();
                                     ?>
                                         <!-- Blog Post Card -->
-                                        <div class="col-md-12 mb-4">
+                                        <div class="col-md-6 offset-3 mb-4">
                                             <div class="card shadow-sm h-100">
                                                 <!-- Post Image -->
                                                 <img src="<?= $post['image'] ?>" class="card-img-top" alt="<?= $post['title'] ?>">

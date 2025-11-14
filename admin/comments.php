@@ -165,7 +165,7 @@ $pendingNum = count($pendingComments);
 
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Posts Table</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Comments Table</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -183,14 +183,19 @@ $pendingNum = count($pendingComments);
                                     </thead>
                                     <tbody>
                                         <?php foreach ($comments as $comment): ?>
+
                                             <?php
-                                            $userStmt = $pdo_conn->query('SELECT * From users WHERE id = ' . $comment['user_id']);
+                                            // Fetch User
+                                            $userStmt = $pdo_conn->query('SELECT * FROM users WHERE id = ' . (int)$comment['user_id']);
                                             $user = $userStmt->fetch(PDO::FETCH_ASSOC);
-                                            $username = $user['Name'];
-                                            $postStmt = $pdo_conn->query('SELECT * From posts WHERE id = ' . $comment['post_id']);
+                                            $username = $user ? $user['name'] : "Unknown User";
+
+                                            // Fetch Post
+                                            $postStmt = $pdo_conn->query('SELECT * FROM posts WHERE id = ' . (int)$comment['post_id']);
                                             $post = $postStmt->fetch(PDO::FETCH_ASSOC);
-                                            $postTitle = $post['title'];
+                                            $postTitle = $post ? $post['title'] : "Deleted Post";
                                             ?>
+
                                             <tr>
                                                 <td><?= $comment["id"] ?></td>
                                                 <td><?= $postTitle ?></td>
@@ -199,10 +204,17 @@ $pendingNum = count($pendingComments);
                                                 <td><?= $comment["status"] ?></td>
                                                 <td><?= $comment["created_at"] ?></td>
                                                 <td>
-                                                    <a href="deletepost.php?id=<?= $post['id'] ?>" class="btn btn-danger btn-sm mb-1" onclick="return confirm('Are you sure you want to delete this post?');">Delete</a>
+                                                    <?php if ($post): ?>
+                                                        <a href="deletepost.php?id=<?= $post['id'] ?>" class="btn btn-danger btn-sm mb-1"
+                                                        onclick="return confirm('Are you sure you want to delete this post?');">Delete</a>
+                                                    <?php else: ?>
+                                                        <span class="text-muted">No post</span>
+                                                    <?php endif ?>
                                                 </td>
                                             </tr>
+
                                         <?php endforeach ?>
+
                                     </tbody>
                                 </table>
                             </div>

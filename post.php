@@ -63,7 +63,8 @@ if (!isset($_GET['id']) || !isset($_GET['cat'])) {
                                             <div class="card mb-2">
                                                 <div class="card-body">
                                                     <h6 class="card-subtitle mb-2 fw-bold">
-                                                        <?= $user['Name'] ?>
+                                                        <?= $user['name'] ?>
+                                                        -
                                                         <small><?= $comment['created_at'] ?></small>
                                                     </h6>
 

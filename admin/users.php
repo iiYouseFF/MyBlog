@@ -132,9 +132,9 @@ $response = $stmt->fetchAll();
                                         <?php foreach ($response as $user): ?>
                                             <tr>
                                                 <td><?= $user["id"] ?></td>
-                                                <td><?= $user["Name"] ?></td>
-                                                <td><?= $user["Email"] ?></td>
-                                                <td><?= $user["Age"] ?></td>
+                                                <td><?= $user["name"] ?></td>
+                                                <td><?= $user["email"] ?></td>
+                                                <td><?= $user["age"] ?></td>
                                                 <td><?= $user["created_at"] ?></td>
                                             </tr>
                                         <?php endforeach ?>

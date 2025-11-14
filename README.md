@@ -30,8 +30,8 @@ A full-featured blog management system built with PHP, MySQL, and the SB Admin 2
 
 1. Clone the repository to your web server directory:
 ```bash
-git clone <repository-url>
-cd onsite2
+git clone https://github.com/iiYouseFF/MyBlog.git
+cd Myblog
 ```
 
 2. Create a MySQL database and import the schema:
@@ -106,8 +106,8 @@ chmod 755 uploads
 
 5. Insert a Master admin account in database:
 ```sql
-INSERT INTO `users` (`id`, `password`, `created_at`, `Name`, `Email`, `Age`, `is_admin`) VALUES
-(22, '$2y$12$ZAHX4gIGZXNSNt.RoYR9Nuxk59bRmXvUUWHbmf4pXD0d0DW3TbNAS', '2025-11-07 18:23:24', 'admin', 'admin@gmail.com', 0, 1);
+INSERT INTO `users` (`id`, `password`, `Name`, `Email`, `Age`, `is_admin`) VALUES
+(22, '$2y$12$ZAHX4gIGZXNSNt.RoYR9Nuxk59bRmXvUUWHbmf4pXD0d0DW3TbNAS', 'admin', 'admin@gmail.com', 0, 1);
 ```
 
 6. Configure your web server to point to the project directory.
